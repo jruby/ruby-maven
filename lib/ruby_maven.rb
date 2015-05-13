@@ -24,7 +24,7 @@ require 'maven/ruby/maven'
 module RubyMaven
 
   def self.exec( *args )
-    if args.member? '--version'
+    if args.member?('-version') or args.member?('--version') or args.member?('-v')
       puts "Polyglot Maven Extension #{POLYGLOT_VERSION}\n"
       launch( '--version' )
     elsif defined? Bundler
