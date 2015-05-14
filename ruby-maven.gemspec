@@ -19,9 +19,8 @@ Gem::Specification.new do |s|
 
   s.executables = ['rmvn']
   s.rdoc_options = ["--main", "README.md"]
-  
-  #s.add_dependency 'maven-tools', "~> 1.0.6" 
-  #s.add_dependency 'ruby-maven-libs', "~> 3.3.1"
+
+  s.add_dependency 'ruby-maven-libs', "~> 3.3.1"
   s.add_development_dependency 'minitest', '~> 5.3'  
   s.add_development_dependency 'rake', '~> 10.3'
 end
