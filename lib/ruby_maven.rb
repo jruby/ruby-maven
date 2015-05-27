@@ -43,9 +43,15 @@ module RubyMaven
   end
   
   def self.launch( *args )
+    old_maven_home = ENV['M2_HOME']
+    ENV['M2_HOME'] = Maven.home
+
     Dir.chdir( dir ) do
       Maven.exec( *args )
     end
+
+  ensure
+    ENV['M2_HOME'] = old_maven_home
   end
     
   POLYGLOT_VERSION = begin
