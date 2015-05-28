@@ -46,12 +46,16 @@ module RubyMaven
     old_maven_home = ENV['M2_HOME']
     ENV['M2_HOME'] = Maven.home
 
-    Dir.chdir( dir ) do
-      Maven.exec( *args )
+    extensions = File.join( '.mvn/extensions.xml' )
+    unless has_extensions = File.exists?( extensions )
+      FileUtils.mkdir_p( '.mvn' )
+      FileUtils.cp( File.join( dir, extensions), extensions )
     end
+    Maven.exec( *args )
 
   ensure
     ENV['M2_HOME'] = old_maven_home
+    FileUtils.rm_f( extensions ) unless has_extensions
   end
     
   POLYGLOT_VERSION = begin
