@@ -7,11 +7,14 @@ distribution_management do
 end
 
 plugin :deploy, '2.8.2' do
-  execute_goal :deploy, :phase => :deploy, :id => 'deploy gem to maven central'
+  execute_goal :deploy, :phase => :deploy, :id => 'deploy gem to maven central', :skip => '${deploy.skip}'
 end
+
+properties 'push.skip' => true, 'deploy.skip' => true
 
 profile :id => :release do
   properties 'maven.test.skip' => true, 'invoker.skip' => true
+  properties 'push.skip' => false, 'deploy.skip' => false
   plugin :gpg, '1.5' do
     execute_goal :sign, :id => 'sign artifacts', :phase => :verify
   end
