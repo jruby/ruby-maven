@@ -1,7 +1,7 @@
 require 'maven/ruby/maven'
 require 'rake'
 
-warn 'deprecated: END OF LIFE'
+warn 'deprecated: maven rake tasks is enf of life'
 
 module Maven
   class Tasks

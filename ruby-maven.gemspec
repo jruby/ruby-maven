@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Maven::Ruby::VERSION
 
   s.authors = ["Christian Meier"]
-  s.description = %q{maven support for ruby based on tesla maven. MRI needs java/javac command installed.} 
+  s.description = %q{maven support for ruby DSL pom files. MRI needs java/javac installed.}
   s.summary = %q{maven support for ruby projects}
   s.email = ["m.kristian@web.de"]
 
