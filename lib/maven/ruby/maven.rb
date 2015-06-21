@@ -72,6 +72,10 @@ module Maven
         @options ||= {}
       end
 
+      def <<( v )
+        options[ v ] = nil
+      end
+
       def verbose= v
         @verbose = v
       end
