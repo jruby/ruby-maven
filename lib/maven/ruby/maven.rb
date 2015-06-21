@@ -50,7 +50,7 @@ module Maven
         super()
         
         if project
-          warn 'deprecated: EOF - just tell maven where you (ruby) pom is'
+          warn 'deprecated: End Of Life - just tell maven where your (ruby) pom is'
           begin
             require 'maven/tools/model'
             require 'maven/tools/visitor'
@@ -94,8 +94,9 @@ module Maven
           puts "mvn #{args.join(' ')}"
         end   
         
-        result = RubyMaven.exec( *args )
+        result = RubyMaven.exec( *(args + options_array) )
         if @embedded and not result
+          # TODO remove this when the embedded case is gone
           raise "error in executing maven #{result}"
         else
           result
