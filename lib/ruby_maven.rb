@@ -41,7 +41,7 @@ module RubyMaven
   def self.dir
     @dir ||= File.expand_path( '../../', __FILE__ )
   end
-  
+
   def self.launch( *args )
     old_maven_home = ENV['M2_HOME']
     ENV['M2_HOME'] = Maven.home
@@ -57,10 +57,11 @@ module RubyMaven
     ENV['M2_HOME'] = old_maven_home
     FileUtils.rm_f( extensions ) unless has_extensions
   end
-    
+
   POLYGLOT_VERSION = begin
                        xml = File.read( File.join( dir, '.mvn/extensions.xml' ) )
                        xml.sub( /.*<version>/m, '' ).sub(/<\/version>.*/m, '' )
-                                        
+                     rescue Errno::ENOENT => e
+                      '0.1.11'
                      end
 end
