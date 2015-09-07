@@ -94,11 +94,12 @@ module Maven
       end
 
       def exec(*args)
+        mvn_args = (args + options_array
         if verbose
-          puts "mvn #{args.join(' ')}"
+          puts "mvn #{mvn_args.join(' ')}"
         end   
         
-        result = RubyMaven.exec( *(args + options_array) )
+        result = RubyMaven.exec( *mvn_args )
         if @embedded and not result
           # TODO remove this when the embedded case is gone
           raise "error in executing maven #{result}"
