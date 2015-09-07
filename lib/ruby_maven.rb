@@ -55,7 +55,12 @@ module RubyMaven
 
   ensure
     ENV['M2_HOME'] = old_maven_home
-    FileUtils.rm_f( extensions ) unless has_extensions
+    unless has_extensions
+      FileUtils.rm_f( extensions )
+      dir = File.dirname( extensions )
+      # delete empty .mvn directory
+      FileUtils.rm_rf( dir ) if Dir[dir].size == 0
+    end
   end
 
   POLYGLOT_VERSION = begin
