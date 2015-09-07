@@ -94,7 +94,7 @@ module Maven
       end
 
       def exec(*args)
-        mvn_args = (args + options_array
+        mvn_args = (args + options_array)
         if verbose
           puts "mvn #{mvn_args.join(' ')}"
         end   
