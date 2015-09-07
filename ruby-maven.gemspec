@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
 
   s.license = 'EPL'
 
+  s.executable = 'rmvn'
+
   s.files = `git ls-files`.split($/)
 
   s.rdoc_options = ["--main", "README.md"]
