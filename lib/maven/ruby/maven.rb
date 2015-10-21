@@ -93,6 +93,12 @@ module Maven
         end
       end
 
+      def inherit_jruby_version
+        if defined? JRUBY_VERSION
+          self['jruby.version'] = JRUBY_VERSION
+        end
+      end
+
       def exec(*args)
         mvn_args = (args + options_array)
         if verbose
