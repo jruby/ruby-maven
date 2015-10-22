@@ -59,7 +59,7 @@ module RubyMaven
       FileUtils.rm_f( extensions )
       dir = File.dirname( extensions )
       # delete empty .mvn directory
-      FileUtils.rm_rf( dir ) if Dir[dir].size == 0
+      FileUtils.rm_rf( dir ) if Dir[File.join(dir, '*')].size == 0
     end
   end
 
