@@ -3,25 +3,6 @@ require 'ruby_maven'
 require 'stringio'
 require 'maven/ruby/version'
 
-module CatchStdout
-
-  def self.exec
-    out = $stdout
-    err = $stderr
-    @result = StringIO.new
-    $stdout = @result
-    $stderr = @result
-    yield
-  ensure
-    $stdout = out
-    $stderr = err
-  end
-
-  def self.result
-    @result.string
-  end
-end
-
 describe RubyMaven do
 
   it 'displays the version info' do

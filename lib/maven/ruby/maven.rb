@@ -93,9 +93,13 @@ module Maven
         end
       end
 
-      def inherit_jruby_version
-        if defined? JRUBY_VERSION
-          self['jruby.version'] = JRUBY_VERSION
+      def inherit_jruby_version( version = nil )
+        if version == nil
+          if defined? JRUBY_VERSION
+            self['jruby.version'] = JRUBY_VERSION
+          end
+        elsif version
+          self['jruby.version'] = version
         end
       end
 
