@@ -1,16 +1,20 @@
 require_relative 'setup'
 require 'ruby_maven'
+require 'stringio'
 require 'maven/ruby/version'
 
 module CatchStdout
 
   def self.exec
     out = $stdout
+    err = $stderr
     @result = StringIO.new
     $stdout = @result
+    $stderr = @result
     yield
   ensure
     $stdout = out
+    $stderr = err
   end
 
   def self.result
@@ -21,10 +25,14 @@ end
 describe RubyMaven do
 
   it 'displays the version info' do
-    CatchStdout.exec do
-      RubyMaven.exec( '--version' )
+    Dir.chdir 'spec' do
+      CatchStdout.exec do
+        RubyMaven.exec( '--version' )
+      end
+      CatchStdout.result.must_match /Polyglot Maven Extension 0.1.15/
+      xml = File.read('.mvn/extensions.xml')
+      xml.must_equal "dummy\n"
     end
-    CatchStdout.result.must_match /Polyglot Maven Extension 0.1.9/
   end
 
   let :gem do
@@ -39,7 +47,9 @@ describe RubyMaven do
       RubyMaven.exec( '-Dverbose', 'package' )
     end
     CatchStdout.result.must_match /mvn -Dverbose package/
-    File.exists?( gem )
+    File.exists?( gem ).must_equal true
+    File.exists?( '.mvn/extensions.xml' ).must_equal true
+    File.exists?( '.mvn/extensions.xml.orig' ).wont_equal true
   end
-
+  
 end

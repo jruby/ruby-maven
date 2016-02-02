@@ -22,10 +22,11 @@ require 'maven'
 require 'maven/ruby/maven'
 
 module RubyMaven
+  POLYGLOT_VERSION = "0.1.15"
 
   def self.exec( *args )
     if args.member?('-version') or args.member?('--version') or args.member?('-v')
-      puts "Polyglot Maven Extension #{POLYGLOT_VERSION}\n"
+      warn "Polyglot Maven Extension #{version}"
       launch( '--version' )
     elsif defined? Bundler
       # it can be switching from ruby to jruby with invoking maven
@@ -42,31 +43,45 @@ module RubyMaven
     @dir ||= File.expand_path( '../../', __FILE__ )
   end
 
+  def self.version
+    polyglot_version = begin
+                         xml = File.read( File.join( dir, '.mvn/extensions.xml' ) )
+                         xml.sub( /.*<version>/m, '' ).sub(/<\/version>.*/m, '' )
+                       rescue Errno::ENOENT => e
+                         nil
+                       end
+    POLYGLOT_VERSION.replace(polyglot_version) if polyglot_version
+    POLYGLOT_VERSION
+  end
+
   def self.launch( *args )
     old_maven_home = ENV['M2_HOME']
     ENV['M2_HOME'] = Maven.home
 
     extensions = File.join( '.mvn/extensions.xml' )
-    unless has_extensions = File.exists?( extensions )
+    if has_extensions = File.exists?( extensions )
+      # tests need copy instead of move
+      FileUtils.cp( extensions, extensions + ".orig" )
+    else
       FileUtils.mkdir_p( '.mvn' )
-      FileUtils.cp( File.join( dir, extensions), extensions )
     end
+    FileUtils.cp( File.join( dir, extensions ), extensions ) rescue nil
+
+    # setup version
+    self.version
+
     Maven.exec( *args )
 
   ensure
     ENV['M2_HOME'] = old_maven_home
-    unless has_extensions
-      FileUtils.rm_f( extensions )
+    
+    FileUtils.rm_f( extensions )
+    if has_extensions
+      FileUtils.move( extensions + '.orig', extensions )
+    else
       dir = File.dirname( extensions )
       # delete empty .mvn directory
       FileUtils.rm_rf( dir ) if Dir[File.join(dir, '*')].size == 0
     end
   end
-
-  POLYGLOT_VERSION = begin
-                       xml = File.read( File.join( dir, '.mvn/extensions.xml' ) )
-                       xml.sub( /.*<version>/m, '' ).sub(/<\/version>.*/m, '' )
-                     rescue Errno::ENOENT => e
-                      '0.1.11'
-                     end
 end
