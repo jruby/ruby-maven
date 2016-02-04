@@ -1,3 +1,4 @@
 pkg
 pom*xml
 *.gem
+*.lock
