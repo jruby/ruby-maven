@@ -25,8 +25,10 @@ describe RubyMaven do
   it 'pack the gem' do
     FileUtils.rm_f gem
     CatchStdout.exec do
-      RubyMaven.exec( '-Dverbose', 'package' )
+      # need newer jruby version
+      RubyMaven.exec( '-Dverbose', 'package', '-Djruby.version=1.7.24' )
     end
+    #puts CatchStdout.result
     CatchStdout.result.must_match /mvn -Dverbose package/
     File.exists?( gem ).must_equal true
     File.exists?( '.mvn/extensions.xml' ).must_equal true

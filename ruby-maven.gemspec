@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.executable = 'rmvn'
 
-  s.files = `git ls-files`.split($/)
+  s.files = Dir['lib/**/*'] + Dir['spec/**/*'] + Dir['bin/*'] + Dir['*file'] + Dir['.mvn/*'] + ['README.md', 'ruby-maven.gemspec']
 
   s.rdoc_options = ["--main", "README.md"]
 
