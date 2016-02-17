@@ -25,6 +25,10 @@ module RubyMaven
   POLYGLOT_VERSION = "0.1.15"
 
   def self.exec( *args )
+    if File.exist?('settings.xml') and not args.member?('-s') and not args.member?('--settings')
+      args << '-s'
+      args << 'settings.xml'
+    end
     if args.member?('-version') or args.member?('--version') or args.member?('-v')
       warn "Polyglot Maven Extension #{version}"
       launch( '--version' )
