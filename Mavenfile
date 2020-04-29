@@ -2,7 +2,7 @@
 
 gemspec
 
-properties 'push.skip' => true
+properties 'push.skip': true, 'jruby.version': '9.2.9.0'
 
 profile :id => :release do
   properties 'maven.test.skip' => true, 'invoker.skip' => true
