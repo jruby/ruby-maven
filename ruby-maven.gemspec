@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.homepage = %q{https://github.com/takari/ruby-maven}
 
-  s.license = 'EPL'
+  s.license = 'EPL-2.0'
 
   s.executable = 'rmvn'
 
