@@ -10,7 +10,7 @@ describe RubyMaven do
       CatchStdout.exec do
         RubyMaven.exec( '--version' )
       end
-      CatchStdout.result.must_match /Polyglot Maven Extension 0.1.15/
+      CatchStdout.result.must_match /Polyglot Maven Extension 0.4.4/
       xml = File.read('.mvn/extensions.xml')
       xml.must_equal "dummy\n"
     end
@@ -26,7 +26,7 @@ describe RubyMaven do
     FileUtils.rm_f gem_name
     CatchStdout.exec do
       # need newer jruby version
-      RubyMaven.exec( '-Dverbose', 'package', '-Djruby.version=1.7.24' )
+      RubyMaven.exec( '-Dverbose', 'package', '-Djruby.version=9.3.0.0' )
     end
     #puts CatchStdout.result
     CatchStdout.result.must_match /mvn -Dverbose package/
