@@ -33,7 +33,7 @@ describe Maven::Ruby::Maven do
     it 'takes default jruby version with inherit jruby version' do
       subject.inherit_jruby_version
       subject.exec( '-X', 'initialize', '-l', 'pkg/log3.txt' )
-      _(File.read('pkg/log3.txt')).must_match /resolve jruby for version 1.7.22/
+      _(File.read('pkg/log3.txt')).must_match /resolve jruby for version 9.3.1.0/
     end
   end
  end
