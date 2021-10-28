@@ -1,0 +1,31 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        ruby: [2.6.8, jruby-head, jruby-9.3.1.0]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 8
+
+      - name: Run test
+        run: bundle exec rake

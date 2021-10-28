@@ -1,4 +1,5 @@
 pkg
 pom*xml
+pom*xml.bkp
 *.gem
 *.lock
