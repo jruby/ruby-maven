@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary = %q{maven support for ruby projects}
   s.email = ["m.kristian@web.de"]
 
-  s.homepage = %q{https://github.com/takari/ruby-maven}
+  s.homepage = %q{https://github.com/jruby/ruby-maven}
 
   s.license = 'EPL-2.0'
 
