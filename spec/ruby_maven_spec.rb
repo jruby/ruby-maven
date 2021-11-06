@@ -10,7 +10,7 @@ describe RubyMaven do
       CatchStdout.exec do
         RubyMaven.exec( '--version' )
       end
-      _(CatchStdout.result).must_match /Polyglot Maven Extension 0.4.4/
+      _(CatchStdout.result).must_match /Polyglot Maven Extension 0.4.8/
       xml = File.read('.mvn/extensions.xml')
       _(xml).must_equal "dummy\n"
     end
