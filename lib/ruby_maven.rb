@@ -35,8 +35,14 @@ module RubyMaven
     elsif defined? Bundler
       # it can be switching from ruby to jruby with invoking maven
       # just keep it clean
-      Bundler.with_clean_env do
-        launch( *args )
+      if Bundler.respond_to?(:with_unbundled_env)
+        Bundler.with_unbundled_env do
+          launch( *args )
+        end
+      else
+        Bundler.with_clean_env do
+          launch( *args )
+        end
       end
     else
       launch( *args )
