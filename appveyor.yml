@@ -1,5 +1,5 @@
 install:
-  - set PATH=C:\jruby-9.0.0.0\bin;%PATH%
+  - set PATH=C:\jruby-9.4.7.0\bin;%PATH%
   - bundle
 build: off
 shallow_clone: true
