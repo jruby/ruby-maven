@@ -29,9 +29,9 @@ describe RubyMaven do
       RubyMaven.exec( '-Dverbose', 'package', '-Djruby.version=9.3.0.0' )
     end
     _(out).must_match /mvn -Dverbose package/
-    _(File.exists?( gem_name )).must_equal true
-    _(File.exists?( '.mvn/extensions.xml' )).must_equal true
-    _(File.exists?( '.mvn/extensions.xml.orig' )).wont_equal true
+    _(File.exist?( gem_name )).must_equal true
+    _(File.exist?( '.mvn/extensions.xml' )).must_equal true
+    _(File.exist?( '.mvn/extensions.xml.orig' )).wont_equal true
   end
   
 end

@@ -69,7 +69,7 @@ module RubyMaven
     ENV['M2_HOME'] = Maven.home
 
     extensions = File.join( '.mvn/extensions.xml' )
-    if has_extensions = File.exists?( extensions )
+    if has_extensions = File.exist?( extensions )
       # tests need copy instead of move
       FileUtils.cp( extensions, extensions + ".orig" )
     else
