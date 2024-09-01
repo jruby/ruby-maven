@@ -21,7 +21,6 @@
 require 'maven'
 require 'maven/ruby/maven'
 require 'maven/ruby/version'
-require 'jruby-jars'
 
 module RubyMaven
 
