@@ -20,9 +20,10 @@
 #
 require 'maven'
 require 'maven/ruby/maven'
+require 'maven/ruby/version'
+require 'jruby-jars'
 
 module RubyMaven
-  POLYGLOT_VERSION = "0.1.15"
 
   def self.exec( *args )
     if File.exist?('settings.xml') and not args.member?('-s') and not args.member?('--settings')
@@ -30,7 +31,8 @@ module RubyMaven
       args << 'settings.xml'
     end
     if args.member?('-version') or args.member?('--version') or args.member?('-v')
-      warn "Polyglot Maven Extension #{version}"
+      warn "here"
+      warn "Polyglot Maven Extension #{Maven::Ruby::POLYGLOT_VERSION} via ruby-maven #{Maven::Ruby::VERSION}"
       launch( '--version' )
     elsif defined? Bundler
       # it can be switching from ruby to jruby with invoking maven
@@ -58,40 +60,33 @@ module RubyMaven
                          xml = File.read( File.join( dir, '.mvn/extensions.xml' ) )
                          xml.sub( /.*<version>/m, '' ).sub(/<\/version>.*/m, '' )
                        rescue Errno::ENOENT => e
-                         nil
+                         Maven::Ruby::POLYGLOT_VERSION
                        end
-    POLYGLOT_VERSION.replace(polyglot_version) if polyglot_version
-    POLYGLOT_VERSION
   end
 
   def self.launch( *args )
     old_maven_home = ENV['M2_HOME']
     ENV['M2_HOME'] = Maven.home
-
-    extensions = File.join( '.mvn/extensions.xml' )
-    if has_extensions = File.exist?( extensions )
-      # tests need copy instead of move
-      FileUtils.cp( extensions, extensions + ".orig" )
-    else
-      FileUtils.mkdir_p( '.mvn' )
+    ext_dir = File.join(Maven.lib, 'ext')
+    FileUtils.mkdir_p(ext_dir)
+    local_dir = File.join(__dir__, 'extensions')
+    Dir.new(local_dir).select do |file|
+      file =~ /.*\.jar$/
+    end.each do |jar|
+      source = File.join(local_dir, jar)
+      if jar == "polyglot-ruby-#{Maven::Ruby::POLYGLOT_VERSION}.jar"
+        # ruby maven defines the polyglot version and this jar sets up its classpath
+        # i.e. on upgrade or downgrade the right version will be picked
+        FileUtils.cp(source, File.join(ext_dir, "polyglot-ruby.jar"))
+      elsif not File.exists?(File.join(ext_dir, jar))
+        # jar files are immutable as they carry the version
+        FileUtils.cp(source, ext_dir)
+      end
     end
-    FileUtils.cp( File.join( dir, extensions ), extensions ) rescue nil
-
-    # setup version
-    self.version
 
     Maven.exec( *args )
 
   ensure
     ENV['M2_HOME'] = old_maven_home
-    
-    FileUtils.rm_f( extensions )
-    if has_extensions
-      FileUtils.move( extensions + '.orig', extensions )
-    else
-      dir = File.dirname( extensions )
-      # delete empty .mvn directory
-      FileUtils.rm_rf( dir ) if Dir[File.join(dir, '*')].size == 0
-    end
   end
 end
