@@ -31,8 +31,6 @@ module RubyMaven
       args << 'settings.xml'
     end
     if args.member?('-version') or args.member?('--version') or args.member?('-v')
-      warn "here"
-      warn "Polyglot Maven Extension #{Maven::Ruby::POLYGLOT_VERSION} via ruby-maven #{Maven::Ruby::VERSION}"
       launch( '--version' )
     elsif defined? Bundler
       # it can be switching from ruby to jruby with invoking maven
@@ -65,6 +63,9 @@ module RubyMaven
   end
 
   def self.launch( *args )
+    if args.member?('--version') or args.member?('--show-version')
+      warn "Polyglot Maven Extension #{Maven::Ruby::POLYGLOT_VERSION} via ruby-maven #{Maven::Ruby::VERSION}"
+    end
     old_maven_home = ENV['M2_HOME']
     ENV['M2_HOME'] = Maven.home
     ext_dir = File.join(Maven.lib, 'ext')
@@ -74,13 +75,14 @@ module RubyMaven
       file =~ /.*\.jar$/
     end.each do |jar|
       source = File.join(local_dir, jar)
-      if jar == "polyglot-ruby-#{Maven::Ruby::POLYGLOT_VERSION}.jar"
+      if jar =~ /polyglot-.*-#{Maven::Ruby::POLYGLOT_VERSION}.jar/
         # ruby maven defines the polyglot version and this jar sets up its classpath
         # i.e. on upgrade or downgrade the right version will be picked
-        FileUtils.cp(source, File.join(ext_dir, "polyglot-ruby.jar"))
-      elsif not File.exists?(File.join(ext_dir, jar))
+        FileUtils.cp(source, File.join(ext_dir, jar.sub(/-[0-9.]*(-SNAPSHOT)?.jar$/, '.jar')))
+      elsif not File.exists?(File.join(ext_dir, jar)) and not jar =~ /jruby-(core|stdlib).*/
         # jar files are immutable as they carry the version
-        FileUtils.cp(source, ext_dir)
+        warn jar
+        FileUtils.cp(source, File.join(ext_dir, jar.sub(/-9.4.5.0/, '')))
       end
     end
 
