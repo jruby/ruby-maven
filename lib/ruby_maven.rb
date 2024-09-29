@@ -69,7 +69,7 @@ module RubyMaven
     ENV['M2_HOME'] = Maven.home
     ext_dir = File.join(Maven.lib, 'ext')
     FileUtils.mkdir_p(ext_dir)
-    local_dir = File.join(__dir__, 'extensions')
+    local_dir = File.join(__dir__, 'polyglot_jars')
     Dir.new(local_dir).select do |file|
       file =~ /.*\.jar$/
     end.each do |jar|
