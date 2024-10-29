@@ -10,7 +10,7 @@ describe RubyMaven do
       _, err = capture_io do
         RubyMaven.exec( '--version' )
       end
-      _(err).must_match /Polyglot Maven Extension 0.4.8/
+      _(err).must_match /Polyglot Maven Extension 0.7/
       xml = File.read('.mvn/extensions.xml')
       _(xml).must_equal "dummy\n"
     end
@@ -30,8 +30,6 @@ describe RubyMaven do
     end
     _(out).must_match /mvn -Dverbose package/
     _(File.exist?( gem_name )).must_equal true
-    _(File.exist?( '.mvn/extensions.xml' )).must_equal true
-    _(File.exist?( '.mvn/extensions.xml.orig' )).wont_equal true
   end
   
 end

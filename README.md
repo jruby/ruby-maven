@@ -56,7 +56,19 @@ other is closer to maven in its naming.
 
 it is licensed under (EPL-1.0)[https://www.eclipse.org/legal/epl-v10.html]
 
-## contributing #
+## building ##
+
+Prepare and pack the gem under ./pkg
+```
+./mvnw install
+```
+
+Push the gem to rubygems.org
+```
+./mvnw deploy -Prelease
+```
+
+## contributing ##
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
