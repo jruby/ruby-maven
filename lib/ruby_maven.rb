@@ -78,7 +78,7 @@ module RubyMaven
         # ruby maven defines the polyglot version and this jar sets up its classpath
         # i.e. on upgrade or downgrade the right version will be picked
         FileUtils.cp(source, File.join(ext_dir, jar.sub(/-[0-9.]*(-SNAPSHOT)?.jar$/, '.jar')))
-      elsif not File.exists?(File.join(ext_dir, jar)) and not jar =~ /jruby-(core|stdlib).*/
+      elsif not File.exist?(File.join(ext_dir, jar)) and not jar =~ /jruby-(core|stdlib).*/
         # jar files are immutable as they carry the version
         warn jar
         FileUtils.cp(source, File.join(ext_dir, jar.sub(/-9.4.5.0/, '')))
